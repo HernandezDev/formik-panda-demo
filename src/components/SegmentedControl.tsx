@@ -12,7 +12,7 @@ const segmentedItem = cva({
         textAlign: 'center',
         fontWeight: 'medium',
         transition: 'colors',
-        '&:has(:focus-visible)': {
+        _focusVisibleWithin: {
             outlineStyle: 'solid',
             outlineWidth: '1px',
             outlineColor: 'blue.500',

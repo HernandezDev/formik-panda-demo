@@ -15,6 +15,12 @@ export default defineConfig({
     extend: {},
   },
 
+  conditions: {
+    extend: {
+      focusVisibleWithin: '&:has(:focus-visible)',
+    },
+  },
+
   strictTokens: true,
 
   // The output directory for your css system
