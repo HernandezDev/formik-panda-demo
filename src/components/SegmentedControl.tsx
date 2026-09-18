@@ -2,8 +2,6 @@
 import { Field, type FieldProps } from 'formik';
 import { css, cva } from '../../styled-system/css';
 
-const PLAN_OPTIONS = ['free', 'pro', 'enterprise'] as const;
-
 const segmentedItem = cva({
     base: {
         padding: '2',
@@ -36,28 +34,34 @@ const trackStyles = css({
     width: 'fit',
 });
 
-export function SegmentedControl({ name }: { name: string }) {
+type SegmentedControlProps<T extends string> = {
+    name: string;
+    options: readonly T[];
+};
+
+export function SegmentedControl<T extends string>({ name, options }: SegmentedControlProps<T>) {
     return (
         <Field name={name}>
-            {({ field }: FieldProps<string>) => (
-                <div role="radiogroup" className={trackStyles}>
-                    {PLAN_OPTIONS.map((option) => (
-                        <label
-                            key={option}
-                            className={segmentedItem({ selected: field.value === option })}
-                        >
-                            {option}
-                            <input
-                                {...field}
-                                type="radio"
-                                value={option}
-                                checked={field.value === option}
-                                className={css({ srOnly: true })}
-                            />
-                        </label>
-                    ))}
-                </div>
-            )}
+            {({ field }: FieldProps<T>) => {
+                const { value: _selectedValue, ...fieldWithoutValue } = field;
+
+                return (
+                    <div role="radiogroup" className={trackStyles}>
+                        {options.map((option) => (
+                            <label key={option} className={segmentedItem({ selected: field.value === option })}>
+                                {option}
+                                <input
+                                    {...fieldWithoutValue}
+                                    type="radio"
+                                    value={option}
+                                    checked={field.value === option}
+                                    className={css({ srOnly: true })}
+                                />
+                            </label>
+                        ))}
+                    </div>
+                );
+            }}
         </Field>
     );
 }
