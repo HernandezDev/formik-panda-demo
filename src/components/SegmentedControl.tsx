@@ -12,6 +12,12 @@ const segmentedItem = cva({
         textAlign: 'center',
         fontWeight: 'medium',
         transition: 'colors',
+        _focusWithin: {
+            outlineStyle: 'solid',
+            outlineWidth: '1px',
+            outlineColor: 'blue.500',
+            outlineOffset: '1',
+        },
     },
     variants: {
         selected: {
