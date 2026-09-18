@@ -15,8 +15,8 @@ const segmentedItem = cva({
     },
     variants: {
         selected: {
-            true: { bg: 'button.bg', color: 'blue.500' },
-            false: { bg: 'transparent', color: 'button.text', _hover: { bg: 'gray.100' } },
+            true: { bg: 'blue.500', color: 'white' },
+            false: { bg: 'transparent', color: 'blue.700', _hover: { bg: 'blue.100' } },
         },
     },
 });
@@ -27,7 +27,7 @@ const trackStyles = css({
     padding: '1',
     bg: 'gray.100',
     borderRadius: 'lg',
-    width: 'fit-content',
+    width: 'auto',
 });
 
 export function SegmentedControl({ name }: { name: string }) {

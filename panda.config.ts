@@ -15,6 +15,8 @@ export default defineConfig({
     extend: {},
   },
 
+  strictTokens: true,
+
   // The output directory for your css system
   outdir: "styled-system",
 });
