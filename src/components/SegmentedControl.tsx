@@ -34,7 +34,7 @@ export function SegmentedControl({ name }: { name: string }) {
     return (
         <Field name={name}>
             {({ field }: FieldProps<string>) => (
-                <div role="tablist" className={trackStyles}>
+                <div role="radiogroup" className={trackStyles}>
                     {PLAN_OPTIONS.map((option) => (
                         <label
                             key={option}
