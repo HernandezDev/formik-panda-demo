@@ -36,6 +36,10 @@ const trackStyles = css({
     overflow: 'hidden',
 });
 
+const wrapperStyles = css({
+    maxWidth: 'sm', // token de tamaño, no un valor crudo
+});
+
 const barStyles = cva({
     base: {
         height: 'full',
@@ -62,7 +66,7 @@ export function PasswordStrength({ name }: PasswordStrengthProps) {
                 const level = getPasswordStrengthLevel(field.value ?? '');
 
                 return (
-                    <div>
+                    <div className={wrapperStyles}>
                         <input {...field} type="password" className={inputStyles} />
                         <div className={trackStyles}>
                             <div className={barStyles({ level })} />
