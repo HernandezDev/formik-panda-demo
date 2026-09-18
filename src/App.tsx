@@ -6,9 +6,9 @@ import { DebugValues } from './components/DebugValues'
 
 function App() {
   return (
-    <Formik initialValues={{ plan: 'free' }} onSubmit={() => { }}>
+    <Formik initialValues={{ plan: 'Free' }} onSubmit={() => { }}>
       <>
-        <SegmentedControl name="plan" options={['free', 'pro', 'enterprise'] as const} />
+        <SegmentedControl name="plan" options={['Free', 'Pro', 'Enterprise'] as const} />
         <DebugValues />
       </>
     </Formik>

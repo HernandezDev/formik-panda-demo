@@ -5,7 +5,9 @@ import { css, cva } from '../../styled-system/css';
 const segmentedItem = cva({
     base: {
         padding: '2',
-        borderRadius: 'md',
+        paddingLeft: '4',
+        paddingRight: '4',
+        borderRadius: 'full',
         cursor: 'pointer',
         textAlign: 'center',
         fontWeight: 'medium',
@@ -30,7 +32,10 @@ const trackStyles = css({
     gap: '1',
     padding: '1',
     bg: 'gray.100',
-    borderRadius: 'lg',
+    borderRadius: 'full',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'gray.300',
     width: 'fit',
 });
 
