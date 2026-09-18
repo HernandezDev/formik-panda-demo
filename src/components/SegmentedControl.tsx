@@ -22,12 +22,11 @@ const segmentedItem = cva({
 });
 
 const trackStyles = css({
-    display: 'flex',
+    display: 'inline-flex',
     gap: '1',
     padding: '1',
     bg: 'gray.100',
     borderRadius: 'lg',
-    width: 'auto',
 });
 
 export function SegmentedControl({ name }: { name: string }) {
