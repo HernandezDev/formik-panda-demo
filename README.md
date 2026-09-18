@@ -1,16 +1,24 @@
 # Formik + Panda CSS — Ni reinventar la rueda ni importarla ya hecha
 
-Proyecto chico y didáctico para explorar un patrón: usar los **inputs nativos
-del navegador** (radio, checkbox, text) como motor de estado y accesibilidad,
-y **Panda CSS** para dibujar encima exactamente la UI que hace falta — sin
-depender de una librería de componentes pre-armados que solo te deja
-personalizar hasta donde ella decidió permitirlo.
+Proyecto chico y didáctico para demostrar un patrón puntual: un **input
+nativo del navegador** (radio, checkbox) puede cambiar completamente de
+apariencia — sin perder nada de su comportamiento nativo (foco, teclado,
+semántica para lectores de pantalla) — usando **Panda CSS** para dibujar
+encima exactamente la UI que hace falta. No hace falta una librería de
+componentes pre-armados que solo deja personalizar hasta donde ella decidió
+permitirlo, ni reconstruir ese comportamiento desde cero con `div`s y
+atributos ARIA a mano.
+
+**La tesis específica que este proyecto demuestra:** el input real sigue
+ahí, sigue siendo funcionalmente el mismo elemento — solo que nadie lo
+reconocería a simple vista. No es un componente nuevo con estilo de input;
+es el input de siempre, redisfrazado por completo.
 
 ## Por qué no usamos una librería de UI
 
-El navegador ya resuelve el 80% del trabajo de un componente interactivo:
-navegación con teclado, foco, el modelo de datos (`FormData`), y el anuncio
-correcto para lectores de pantalla. Cuando envolvés un `<input type="radio">`
+El navegador ya resuelve buena parte del trabajo de un componente
+interactivo: navegación con teclado, foco, el modelo de datos (`FormData`), y
+el anuncio correcto para lectores de pantalla. Cuando envolvés un `<input type="radio">`
 real en tu propio `<label>` estilizado, no estás mintiéndole al DOM sobre qué
 es ese elemento — sigue siendo, semánticamente, lo que dice ser. Solo le
 cambiás la piel.
@@ -22,42 +30,35 @@ usuario está eligiendo — el patrón es legítimo, no un parche.
 
 **Regla que seguimos en todo el proyecto:** los inputs nativos de formulario
 se usan solo para representar *datos* reales del usuario. El estado de
-interfaz (¿está en modo edición? ¿está abierto un menú?) se maneja con
-`useState`, nunca con un input disfrazado.
+interfaz (¿está abierto un menú? ¿está en modo edición?) se maneja con
+`useState`, nunca con un input disfrazado — este proyecto no mezcla las dos
+cosas en ningún componente.
 
-## Los tres casos
+## Casos
 
-Cada uno muestra un ángulo distinto del mismo patrón, y cada `recipe` de
-Panda tiene variantes visuales reales para justificar su existencia — no son
-cajas de texto planas.
-
-### 1. Segmented Control (`SegmentedControl`)
-Un **segmented control** de 3 opciones (`free | pro | enterprise`) — no un
-radio group con aspecto default, sino un radio group *renderizado* como
-pestañas. El caso más simple: un solo valor, dentro de un conjunto cerrado
-de opciones nombradas.
+### Caso 1 — Segmented Control (`SegmentedControl`)
+Un **segmented control** de N opciones (por ejemplo `free | pro |
+enterprise`) — no un radio group con aspecto default, sino un radio group
+*renderizado* como pestañas. Cada `<input type="radio">` sigue existiendo en
+el DOM, oculto visualmente (`srOnly`) pero completamente funcional: recibe
+foco con Tab, se activa con teclado, y un lector de pantalla lo sigue
+anunciando como lo que es. El único trabajo de Panda es dibujar el `<label>`
+que lo envuelve con el aspecto de pestaña — el `recipe` (`cva`) define las
+variantes visuales según cuál opción está seleccionada.
 
 Inspirado en el componente **Segmented Control** de
-[Zag.js](https://zagjs.com/components/react/segmented-control) — no en su
-componente `Tabs` (ese usa `<button>` + atributos ARIA manuales, sin input
-nativo por debajo). Segmented Control construye su UI sobre
+[Zag.js](https://zagjs.com/components/react/segmented-control). Segmented Control construye su UI sobre
 `@zag-js/radio-group`, con un `<input type="radio">` oculto por cada opción
 (`getItemHiddenInputProps`) — el mismo patrón que usamos acá.
 
-### 2. Editable (`Editable`)
-Inspirado en el componente homónimo de [Zag.js](https://zagjs.com). Mezcla,
-en un mismo componente, las dos reglas del proyecto:
-- `editing` (¿se está editando?) → estado de UI → `useState`.
-- El valor confirmado → dato real de formulario → Formik.
+El componente es genérico: recibe `name` y `options` como props, tipadas con
+un genérico (`<T extends string>`), así que sirve para cualquier conjunto de
+opciones, no solo para un selector de plan.
 
-Incluye un botón "Guardar" con una variante `dirty` (activo solo si el
-borrador difiere del valor guardado).
-
-### 3. Password Strength Meter (`PasswordStrength`)
-Validación **escrita a mano**, sin Yup ni Zod ni Valibot — a propósito: un
-schema declarativo esconde cómo se arma la regla; escribirla a mano expone
-la lógica para quien está aprendiendo el patrón. El resultado alimenta una
-barra de fortaleza con variantes `weak | medium | strong`.
+> Otros casos (Editable, Password Strength Meter) se evaluaron y se
+> descartaron del alcance: aunque usaban Formik + Panda, no demostraban esta
+> tesis puntual — el input de esos casos no cambiaba de apariencia, solo
+> convivía al lado de otros elementos.
 
 ## Stack
 
@@ -68,7 +69,7 @@ barra de fortaleza con variantes `weak | medium | strong`.
 
 ## Desarrollo
 
-\`\`\`bash
+```bash
 pnpm install
 pnpm dev
-\`\`\`
+```
