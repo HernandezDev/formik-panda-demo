@@ -46,19 +46,13 @@ anunciando como lo que es. El único trabajo de Panda es dibujar el `<label>`
 que lo envuelve con el aspecto de pestaña — el `recipe` (`cva`) define las
 variantes visuales según cuál opción está seleccionada.
 
-Inspirado en el componente **Segmented Control** de
-[Zag.js](https://zagjs.com/components/react/segmented-control). Segmented Control construye su UI sobre
-`@zag-js/radio-group`, con un `<input type="radio">` oculto por cada opción
-(`getItemHiddenInputProps`) — el mismo patrón que usamos acá.
+Inspirado en el componente Segmented Control de Zag.js. Zag construye este componente sobre un radio group real, con un input nativo oculto por cada opción — el mismo patrón que usamos acá.
+
 
 El componente es genérico: recibe `name` y `options` como props, tipadas con
 un genérico (`<T extends string>`), así que sirve para cualquier conjunto de
 opciones, no solo para un selector de plan.
 
-> Otros casos (Editable, Password Strength Meter) se evaluaron y se
-> descartaron del alcance: aunque usaban Formik + Panda, no demostraban esta
-> tesis puntual — el input de esos casos no cambiaba de apariencia, solo
-> convivía al lado de otros elementos.
 
 ## Stack
 
