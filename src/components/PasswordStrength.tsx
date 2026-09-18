@@ -4,7 +4,9 @@ import { css, cva } from '../../styled-system/css';
 
 // Validación a mano, sin Yup/Valibot — el objetivo es exponer la lógica,
 // no esconderla detrás de un schema.
-function getPasswordStrengthLevel(value: string): 'weak' | 'medium' | 'strong' {
+function getPasswordStrengthLevel(value: string): 'empty' | 'weak' | 'medium' | 'strong' {
+    if (value.length === 0) return 'empty';
+
     const rules = [
         value.length >= 8,
         /[A-Z]/.test(value),
@@ -41,6 +43,7 @@ const barStyles = cva({
     },
     variants: {
         level: {
+            empty: { bg: 'transparent', width: '0' },
             weak: { bg: 'red.500', width: '1/3' },
             medium: { bg: 'yellow.500', width: '2/3' },
             strong: { bg: 'green.500', width: 'full' },
