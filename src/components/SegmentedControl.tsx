@@ -15,7 +15,7 @@ const segmentedItem = cva({
     },
     variants: {
         selected: {
-            true: { bg: 'button.bg', color: 'white' },
+            true: { bg: 'button.bg', color: 'blue.500' },
             false: { bg: 'transparent', color: 'button.text', _hover: { bg: 'gray.100' } },
         },
     },
