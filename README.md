@@ -40,12 +40,11 @@ cosas en ningún componente.
 Un **segmented control** de N opciones (por ejemplo `free | pro |
 enterprise`) — no un radio group con aspecto default, sino un radio group
 *renderizado* como pestañas. Cada `<input type="radio">` sigue existiendo en
-el DOM, oculto visualmente (`srOnly`) pero completamente funcional: recibe
-foco con Tab, se activa con teclado, y un lector de pantalla lo sigue
-anunciando como lo que es. El único trabajo de Panda es dibujar el `<label>`
-que lo envuelve con el aspecto de pestaña — el `recipe` (`cva`) define las
-variantes visuales según cuál opción está seleccionada.
-
+el DOM, oculto visualmente (`srOnly`) pero completamente funcional: el grupo
+recibe foco con `Tab`, se navega y activa con las flechas del teclado, y un
+lector de pantalla lo sigue anunciando como lo que es. El único trabajo de Panda
+es dibujar el `<label>` que lo envuelve con el aspecto de pestaña — el `recipe`
+(`cva`) define las variantes visuales según cuál opción está seleccionada.
 Inspirado en el componente Segmented Control de Zag.js. Zag construye este componente sobre un radio group real, con un input nativo oculto por cada opción — el mismo patrón que usamos acá.
 
 
