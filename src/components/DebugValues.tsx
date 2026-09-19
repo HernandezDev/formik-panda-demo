@@ -3,6 +3,8 @@ import { useFormikContext } from 'formik';
 import { css } from '../../styled-system/css';
 
 const debugStyles = css({
+    alignSelf: 'stretch', // ignora el `alignItems: center` del padre, solo para este elemento
+    width: 'full',
     marginTop: '4',
     padding: '3',
     bg: 'gray.900',
