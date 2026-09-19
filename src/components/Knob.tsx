@@ -4,12 +4,11 @@ import { css } from '../../styled-system/css';
 
 const MIN = 0;
 const MAX = 100;
+const STEP = 1;
 
-// Geometría del arco: r=38 -> perímetro completo = 2 * PI * 38 ≈ 238.76
-// Un arco de 270° ocupa el 75% del perímetro = ~179
 const RADIUS = 38;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-const ARC_LENGTH = CIRCUMFERENCE * 0.75; // 270°
+const ARC_LENGTH = CIRCUMFERENCE * 0.75;
 
 const wrapperStyles = css({
     position: 'relative',
@@ -33,7 +32,8 @@ const knobCapStyles = css({
     height: '16',
     borderRadius: 'full',
     bg: 'white',
-    boxShadow: 'lg',
+    // Usar token estándar de Panda ('md' o 'lg')
+    boxShadow: 'md',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'gray.200',
@@ -42,7 +42,6 @@ const knobCapStyles = css({
     pointerEvents: 'none',
 });
 
-// La muesca física en la parte superior del cuerpo rotatorio
 const notchStyles = css({
     width: '1',
     height: '3',
@@ -57,26 +56,34 @@ const rangeStyles = css({
     width: 'full',
     height: 'full',
     opacity: 0,
-    cursor: 'pointer',
+    cursor: 'ns-resize',
 });
 
 export function Knob({ name }: { name: string }) {
     return (
         <Field name={name}>
-            {({ field }: FieldProps<string>) => {
+            {({ field, form }: FieldProps<string | number>) => {
                 const value = Number(field.value ?? MIN);
                 const percent = Math.min(Math.max((value - MIN) / (MAX - MIN), 0), 1);
-                const degrees = percent * 270 - 135; // de -135° a +135°
+                const degrees = percent * 270 - 135;
                 const currentStroke = percent * ARC_LENGTH;
 
+                const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+                    e.preventDefault();
+                    const stepDelta = e.deltaY < 0 ? STEP : -STEP;
+                    const next = Math.min(Math.max(value + stepDelta, MIN), MAX);
+                    if (next !== value) {
+                        form.setFieldValue(name, next);
+                    }
+                };
+
                 return (
-                    <div className={wrapperStyles}>
-                        {/* 1. Track de fondo y progreso activo */}
+                    <div className={wrapperStyles} onWheel={handleWheel}>
                         <svg
                             viewBox="0 0 100 100"
                             className={css({ width: 'full', height: 'full', transform: 'rotate(135deg)' })}
+                            aria-hidden="true"
                         >
-                            {/* Pista base de 270° */}
                             <circle
                                 cx="50"
                                 cy="50"
@@ -87,7 +94,6 @@ export function Knob({ name }: { name: string }) {
                                 strokeDasharray={`${ARC_LENGTH} ${CIRCUMFERENCE}`}
                                 strokeLinecap="round"
                             />
-                            {/* Progreso coloreado */}
                             <circle
                                 cx="50"
                                 cy="50"
@@ -100,21 +106,19 @@ export function Knob({ name }: { name: string }) {
                             />
                         </svg>
 
-                        {/* 2. Cuerpo cilíndrico del knob que rota físicamente */}
-                        <div
-                            className={knobCapStyles}
-                            style={{ transform: `rotate(${degrees}deg)` }}
-                        >
+                        <div className={knobCapStyles} style={{ transform: `rotate(${degrees}deg)` }}>
                             <div className={notchStyles} />
                         </div>
 
-                        {/* 3. Input range accesible nativo invisible encima */}
                         <input
-                            {...field}
                             type="range"
+                            name={field.name}
                             min={MIN}
                             max={MAX}
+                            step={STEP}
                             value={value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
                             className={rangeStyles}
                         />
                     </div>
