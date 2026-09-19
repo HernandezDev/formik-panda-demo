@@ -47,11 +47,17 @@ es dibujar el `<label>` que lo envuelve con el aspecto de pestaña — el `recip
 (`cva`) define las variantes visuales según cuál opción está seleccionada.
 Inspirado en el componente Segmented Control de Zag.js. Zag construye este componente sobre un radio group real, con un input nativo oculto por cada opción — el mismo patrón que usamos acá.
 
-
 El componente es genérico: recibe `name` y `options` como props, tipadas con
 un genérico (`<T extends string>`), así que sirve para cualquier conjunto de
 opciones, no solo para un selector de plan.
 
+### Próximos casos
+
+- **Estrellas de calificación** — radio group, con relleno acumulativo
+  (`~` + orden invertido en el DOM).
+- **Chips de filtro** — checkboxes, multi-selección.
+- **Perilla (knob) rotativa** — `<input type="range">` convertido en un
+  dial circular en vez de una barra.
 
 ## Stack
 
