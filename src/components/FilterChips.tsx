@@ -13,7 +13,7 @@ const chip = cva({
         cursor: 'pointer',
         paddingX: '3',
         paddingY: '1',
-        borderRadius: 'md',
+        borderRadius: 'full',
         fontSize: 'sm',
         fontWeight: 'medium',
         borderWidth: '1px',
@@ -40,7 +40,7 @@ export function FilterChips<T extends string>({ name, options }: FilterChipsProp
                 <Field key={option} name={name} type="checkbox" value={option}>
                     {({ field }: FieldProps<T>) => (
                         <label className={chip({ selected: field.checked })}>
-                            {field.checked ? '✓ ' : ''}{option}
+                            {option}{field.checked ? ' ×' : ''}
                             <input {...field} type="checkbox" value={option} className={css({ srOnly: true })} />
                         </label>
                     )}
