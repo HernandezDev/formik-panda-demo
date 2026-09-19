@@ -57,6 +57,8 @@ const rangeStyles = css({
     height: 'full',
     opacity: 0,
     cursor: 'ns-resize',
+    writingMode: 'vertical-lr',
+    direction: 'rtl', // así "arriba" queda como el valor máximo, no el mínimo
 });
 
 export function Knob({ name }: { name: string }) {

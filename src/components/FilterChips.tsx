@@ -19,6 +19,12 @@ const chip = cva({
         borderWidth: '1px',
         borderStyle: 'solid',
         transition: 'colors',
+        _focusVisibleWithin: {
+            outlineStyle: 'solid',
+            outlineWidth: '1px',
+            outlineColor: 'blue.500',
+            outlineOffset: '1',
+        },
     },
     variants: {
         selected: {
