@@ -63,11 +63,14 @@ export function RangeFill({ name }: RangeFillProps) {
             {({ field }: FieldProps<string>) => {
                 const value = Number(field.value ?? MIN);
                 const percent = (value - MIN) / (MAX - MIN);
+                const THUMB_SIZE = 20;
+                const thumbOffset = (0.5 - percent) * THUMB_SIZE;
+                const thumbLeft = `calc(${percent * 100}% + ${thumbOffset}px)`;
 
                 return (
                     <div className={wrapperStyles}>
-                        <div className={fillStyles} style={{ transform: `scaleX(${percent})` }} />
-                        <div className={thumbStyles} style={{ left: `${percent * 100}%` }} />
+                        <div className={fillStyles} style={{ width: `${percent * 100}%` }} />
+                        <div className={thumbStyles} style={{ left: thumbLeft }} />
                         <input
                             {...field}
                             type="range"
