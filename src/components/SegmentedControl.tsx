@@ -1,42 +1,61 @@
 // SegmentedControl.tsx
 import { Field, type FieldProps } from 'formik';
-import { css, cva } from '../../styled-system/css';
+import { sva } from '../../styled-system/css';
 
-const segmentedItem = cva({
+const segmentedControlSlots = sva({
+    slots: ['track', 'item', 'input'],
     base: {
-        padding: '2',
-        paddingLeft: '4',
-        paddingRight: '4',
-        borderRadius: 'full',
-        cursor: 'pointer',
-        textAlign: 'center',
-        fontWeight: 'medium',
-        transition: 'colors',
-        _focusVisibleWithin: {
-            outlineStyle: 'solid',
-            outlineWidth: '1px',
-            outlineColor: 'blue.500',
-            outlineOffset: '1',
+        track: {
+            display: 'flex',
+            gap: '1',
+            padding: '1',
+            bg: 'gray.100',
+            borderRadius: 'full',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: 'gray.300',
+            width: 'fit',
+        },
+        item: {
+            paddingY: '2',
+            paddingX: '4',
+            borderRadius: 'full',
+            cursor: 'pointer',
+            textAlign: 'center',
+            fontWeight: 'medium',
+            transition: 'colors',
+            userSelect: 'none',
+            _focusVisibleWithin: {
+                outlineStyle: 'solid',
+                outlineWidth: '1px',
+                outlineColor: 'blue.500',
+                outlineOffset: '1',
+            },
+        },
+        input: {
+            srOnly: true,
         },
     },
     variants: {
         selected: {
-            true: { bg: 'blue.500', color: 'white' },
-            false: { bg: 'transparent', color: 'blue.700', _hover: { bg: 'blue.100' } },
+            true: {
+                item: {
+                    bg: 'blue.500',
+                    color: 'white',
+                },
+            },
+            false: {
+                item: {
+                    bg: 'transparent',
+                    color: 'blue.700',
+                    _hover: { bg: 'blue.100' },
+                },
+            },
         },
     },
-});
-
-const trackStyles = css({
-    display: 'flex',
-    gap: '1',
-    padding: '1',
-    bg: 'gray.100',
-    borderRadius: 'full',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'gray.300',
-    width: 'fit',
+    defaultVariants: {
+        selected: false,
+    },
 });
 
 type SegmentedControlProps<T extends string> = {
@@ -44,29 +63,37 @@ type SegmentedControlProps<T extends string> = {
     options: readonly T[];
 };
 
-export function SegmentedControl<T extends string>({ name, options }: SegmentedControlProps<T>) {
+export function SegmentedControl<T extends string>({
+    name,
+    options,
+}: SegmentedControlProps<T>) {
+    const baseStyles = segmentedControlSlots();
+
     return (
         <Field name={name}>
-            {({ field }: FieldProps<T>) => {
-                const { value: _selectedValue, ...fieldWithoutValue } = field;
+            {({ field }: FieldProps<T>) => (
+                <div role="radiogroup" className={baseStyles.track}>
+                    {options.map((option) => {
+                        const isSelected = field.value === option;
+                        const itemStyles = segmentedControlSlots({ selected: isSelected });
 
-                return (
-                    <div role="radiogroup" className={trackStyles}>
-                        {options.map((option) => (
-                            <label key={option} className={segmentedItem({ selected: field.value === option })}>
+                        return (
+                            <label key={option} className={itemStyles.item}>
                                 {option}
                                 <input
-                                    {...fieldWithoutValue}
                                     type="radio"
+                                    name={field.name}
                                     value={option}
-                                    checked={field.value === option}
-                                    className={css({ srOnly: true })}
+                                    checked={isSelected}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    className={baseStyles.input}
                                 />
                             </label>
-                        ))}
-                    </div>
-                );
-            }}
+                        );
+                    })}
+                </div>
+            )}
         </Field>
     );
 }
